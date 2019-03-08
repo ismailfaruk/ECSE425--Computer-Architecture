@@ -1,24 +1,17 @@
-# [ECSE425 - Computer Architecture] (https://www.mcgill.ca/study/2018-2019/courses/ecse-425)
+# [ECSE425 - Computer Architecture](https://www.mcgill.ca/study/2018-2019/courses/ecse-425)
 
-Project repository for ECSE425 - Proposing hardware optimization changes 
-
-
-This reopository contains 3 Assignments done using C, which were made for adademic use.
+Project repository for ECSE425 - Proposing hardware optimization changes for cache, made for adademic use.
 
 ## Description
 
-Assignment 1 - Process Management and Tiny Shell - Involved building a tiny shell to mimic a shell with running processes using Fork, Clone, VClone and FIFO, using assigned flags when running the shell.
 
-Assignment 2 - Simple Key-Value Store - Creating a store in the kernel memory, and implementing [Readers and Writers](https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem) semaphore algorithm to maintain proper functionality.
-
-Assignment 3 - Simple Resource Container - Creating [Cgroup](https://en.wikipedia.org/wiki/Cgroups) policies for any spawned containers using assigned flags relating to a particular Cgroup.
 
 ## Built With
 
-* [C](https://en.wikipedia.org/wiki/C_(programming_language)) - The programming language used
-* [Ubuntu](https://www.ubuntu.com/) - The Linux Distro used for deployment and testing
-* [Visual Studio Code](https://code.visualstudio.com/) - The source code editor
-* [Docker](https://www.docker.com/) - The software used for operating-system-level virtualization
+* [JAVA](https://www.java.com/en/) - The programming language used
+* [Apache ANT v1.10.5](https://ant.apache.org/) - The Java library and command-line tool used
+* [MIPS64](https://www.mips.com/products/architectures/mips64/) - The version of MIPS architecture used
+* [EduMIPS64](https://www.edumips.org/) - Visual and cross-platform MIPS64 CPU Simulator
 
 ## Authors
 
