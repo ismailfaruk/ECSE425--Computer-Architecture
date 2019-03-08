@@ -1,4 +1,4 @@
-# [ECSE425 - Computer Architecture](https://www.mcgill.ca/study/2018-2019/courses/ecse-425)
+# [ECSE425 - Computer Architecture] (https://www.mcgill.ca/study/2018-2019/courses/ecse-425)
 
 Project repository for ECSE425 - Proposing hardware optimization changes 
 
