@@ -22,7 +22,7 @@ Research proposal: Our Team Bankers consists of Ismail Faruk, Nabila Aziz Shifat
 
 ## Authors
 
-* **Ismail Faruk**
+* [Ismail Faruk](https://github.com/ismailfaruk)
 * [Nabila Aziz](https://www.linkedin.com/in/nabila-aziz-shifat-866061115/)
 * [Jiawei Ni](https://github.com/jiaweini)
 
