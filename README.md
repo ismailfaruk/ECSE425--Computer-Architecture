@@ -22,8 +22,8 @@ Research proposal: Our Team Bankers consists of Ismail Faruk, Nabila Aziz Shifat
 
 ## Authors
 
-* [Ismail Faruk](https://github.com/ismailfaruk)
-* [Nabila Aziz](https://www.linkedin.com/in/nabila-aziz-shifat-866061115/)
-* [Jiawei Ni](https://github.com/jiaweini)
+* [**Ismail Faruk**](https://github.com/ismailfaruk)
+* [**Nabila Aziz**](https://www.linkedin.com/in/nabila-aziz-shifat-866061115/)
+* [**Jiawei Ni**](https://github.com/jiaweini)
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
