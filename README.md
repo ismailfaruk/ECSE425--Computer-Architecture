@@ -18,7 +18,7 @@ Research proposal: Our Team Bankers consists of Ismail Faruk, Nabila Aziz Shifat
 * [Apache ANT v1.10.5](https://ant.apache.org/) - The Java library and command-line tool used
 * [MIPS64](https://www.mips.com/products/architectures/mips64/) - The version of MIPS architecture used
 * [EduMIPS64](https://www.edumips.org/) - Visual and cross-platform MIPS64 CPU Simulator
-* [Dinero]
+* [Dinero IV](http://pages.cs.wisc.edu/~markhill/DineroIV/) - Trace-Driven Uniprocessor Cache Simulator 
 
 ## Authors
 
@@ -27,4 +27,3 @@ Research proposal: Our Team Bankers consists of Ismail Faruk, Nabila Aziz Shifat
 * [Jiawei Ni](https://github.com/jiaweini)
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
