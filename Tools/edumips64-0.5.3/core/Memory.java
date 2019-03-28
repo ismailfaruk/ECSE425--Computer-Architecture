@@ -37,6 +37,7 @@ public class Memory{
     private List<Instruction> instructions;
 	
 	private Map<Integer, String> mem_comments;
+	private Cache cache;
 
 	private int instr_num;
 	private static Memory memory = null;
@@ -95,10 +96,17 @@ public class Memory{
 	 * @throws MemoryElementNotFoundException if given index is too large for this memory.
 	 */
 	public MemoryElement getCell(int address) throws MemoryElementNotFoundException{
+
+		if(cache.isHit(address)){
+			return cache.cacheGet(address);
+		}
+
 		int index = address / 8;
 		
 		if(index >= CPU.DATALIMIT || index < 0 || address < 0)
 			throw new MemoryElementNotFoundException();
+
+		cache.cacheAdd(cells.get(index),address);
 
 		return cells.get(index);
 	}

@@ -1,3 +1,9 @@
+/*
+cache.java
+
+This is a data cache. No instructions are stored here.
+*/
+
 package edumips64.core;
 
 import edumips64.utils.*;
@@ -22,7 +28,21 @@ public class Cache{
 
 	}
 
+	public boolean isHit(int address){
 
+	}
+
+	/** (If cache hits), load data from cache
+	*/
+	public MemoryElement cacheGet(int address){
+
+	}
+
+	/** (After a cache miss), load data from memory and store into cache
+	*/
+	public MemoryElement cacheAdd(List<MemoryElement> mem,int address){
+
+	}
 
 
 	private int getTag(int address){
@@ -44,3 +64,12 @@ public class Cache{
 
 
 }
+
+
+
+
+
+
+
+
+
