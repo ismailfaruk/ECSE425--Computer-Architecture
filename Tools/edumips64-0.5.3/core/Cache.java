@@ -1,9 +1,3 @@
-/*
-cache.java
-
-This is a data cache. No instructions are stored here.
-*/
-
 package edumips64.core;
 
 import edumips64.utils.*;
@@ -13,35 +7,51 @@ import java.util.logging.Logger;
 
 
 public class Cache{
-	private Map<Integer , String> cache;
+	private Map<Integer , Integer> cache;
 	final int tagLength= ;
 	final int indexLength= ;
 	final int BlockLength= ;
 
+	private List<MemoryElement> cells;
+
+
 
 
 	public Cache(){
-		cache = new HashMap<Integer,String>();
+		cells= new ArrayList<MemoryElement>();
+		cache = new HashMap<Integer,Integer>();
 	}
 
-	private class block{
-
-	}
 
 	public boolean isHit(int address){
-
+       int index = getIndex(address);
+       int tag1 = getTag(address); 
+       int tag2 = cache.get(index);
+       return tag1==tag2;
 	}
 
 	/** (If cache hits), load data from cache
 	*/
 	public MemoryElement cacheGet(int address){
-
+		int tag=getTag(address);
+		return cells.get(tag);
 	}
 
 	/** (After a cache miss), load data from memory and store into cache
 	*/
 	public MemoryElement cacheAdd(List<MemoryElement> mem,int address){
+		//remove the element from the cell that corresponds to current index
+		int index = getIndex(address);
+		int tag=getTag(address);
+		if(cache.get(index)!=null){
+			cells.remove(cache.get(index));
+		}
+		cache.replace(index,tag);//update the cache mapping
 
+		cell.add(tag,getCell(mem,address));
+
+		//add element to cell
+		return getCell(mem,address);
 	}
 
 
@@ -60,16 +70,18 @@ public class Cache{
 	}
 
 
+	private MemoryElement getCell(List<MemoryElement> mem,int address) throws MemoryElementNotFoundException{
+
+		int index = address / 8;		
+
+		if(index >= CPU.DATALIMIT || index < 0 || address < 0)
+
+			throw new MemoryElementNotFoundException();
+
+		return mem.get(index);
+
+	}
 
 
 
 }
-
-
-
-
-
-
-
-
-
