@@ -7,15 +7,15 @@ import java.util.logging.Logger;
 
 public class Cache {
 	private Map<Integer, Integer> cache;
-	final int tagLength = 25;
-	final int indexLength = 9;
-	int cacheSize=1;
+	final int tagLength = 10;
+	final int indexLength = 3;
+	int cacheSize = 1;
 	//final int BlockLength;
 
 	private List<MemoryElement> cells;
 
 	public Cache() {
-		for (int i=0;i<indexLenght;i++){
+		for (int i=0;i<indexLength;i++){
 			cacheSize*=2;
 		}
 		
@@ -23,7 +23,7 @@ public class Cache {
 		cache = new HashMap<Integer, Integer>();
 	
 	
-		MemoryElement placeHolder=new MemoryElement();
+		MemoryElement placeHolder=new MemoryElement(-1);
 		for(int i =0;i<cacheSize;i++){
 			cells.add(placeHolder);
 			cache.put(i,-1);
