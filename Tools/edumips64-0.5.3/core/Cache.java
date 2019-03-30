@@ -5,35 +5,31 @@ import java.util.*;
 import edumips64.core.is.*;
 import java.util.logging.Logger;
 
-
-public class Cache{
-	private Map<Integer , Integer> cache;
-	final int tagLength= ;
-	final int indexLength= ;
-	final int BlockLength= ;
+public class Cache {
+	private Map<Integer, Integer> cache;
+	final int tagLength = 25;
+	final int indexLength = 9;
+	//final int BlockLength;
 
 	private List<MemoryElement> cells;
 
-
-
-
-	public Cache(){
-		cells= new ArrayList<MemoryElement>();
-		cache = new HashMap<Integer,Integer>();
+	public Cache() {
+		cells = new ArrayList<MemoryElement>();
+		cache = new HashMap<Integer, Integer>();
 	}
 
-
-	public boolean isHit(int address){
-       int index = getIndex(address);
-       int tag1 = getTag(address); 
-       int tag2 = cache.get(index);
-       return tag1==tag2;
+	public boolean isHit(int address) {
+		int index = getIndex(address);
+		int tag1 = getTag(address);
+		int tag2 = cache.get(index);
+		return tag1 == tag2;
 	}
 
-	/** (If cache hits), load data from cache
-	*/
-	public MemoryElement cacheGet(int address){
-		int tag=getTag(address);
+	/**
+	 * (If cache hits), load data from cache
+	 */
+	public MemoryElement cacheGet(int address) {
+		int tag = getTag(address);
 		return cells.get(tag);
 	}
 
@@ -47,41 +43,43 @@ public class Cache{
 			cells.remove(cache.get(index));
 		}
 		cache.replace(index,tag);//update the cache mapping
-
-		cell.add(tag,getCell(mem,address));
-
-		//add element to cell
-		return getCell(mem,address);
+		try{
+			cells.add(tag,getCell(mem,address));
+			//page fault
+			//add element to cell
+			return getCell(mem,address);
+		}catch(MemoryElementNotFoundException e){
+			return null;
+			}
+			
+		
+	
 	}
 
-
-	private int getTag(int address){
-		String addressBinary = Integer.toBinaryString(no);
-		String tagString=substring(0, tagLength);
-		int tag=Integer.parseInt(tagString);
+	private int getTag(int address) {
+		String addressBinary = Integer.toBinaryString(address);
+		String tagString = addressBinary.substring(0, (tagLength - 1));
+		int tag = Integer.parseInt(tagString);
 		return tag;
 	}
 
-	private int getIndex(int address){
-		String addressBinary = Integer.toBinaryString(no);
-		String iString=substring(tagLength, tagLength+indexLength);
-		int i=Integer.parseInt(iString);
+	private int getIndex(int address) {
+		String addressBinary = Integer.toBinaryString(address);
+		String iString = addressBinary.substring(tagLength, (tagLength + indexLength - 1));
+		int i = Integer.parseInt(iString);
 		return i;
 	}
 
+	private MemoryElement getCell(List<MemoryElement> mem, int address) throws MemoryElementNotFoundException {
 
-	private MemoryElement getCell(List<MemoryElement> mem,int address) throws MemoryElementNotFoundException{
+		int index = address / 8;
 
-		int index = address / 8;		
-
-		if(index >= CPU.DATALIMIT || index < 0 || address < 0)
+		if (index >= CPU.DATALIMIT || index < 0 || address < 0)
 
 			throw new MemoryElementNotFoundException();
 
 		return mem.get(index);
 
 	}
-
-
 
 }

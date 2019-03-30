@@ -106,7 +106,7 @@ public class Memory{
 		if(index >= CPU.DATALIMIT || index < 0 || address < 0)
 			throw new MemoryElementNotFoundException();
 
-		cache.cacheAdd(cells.get(index),address);
+		cache.cacheAdd(cells,address);
 
 		return cells.get(index);
 	}
