@@ -14,7 +14,7 @@ public class Cache {
 
 	private List<MemoryElement> cells;
 
-	public Cache() 
+	public Cache() {
 		for (int i=0;i<indexLenght,i++){
 			cacheSize*=2;
 		}
