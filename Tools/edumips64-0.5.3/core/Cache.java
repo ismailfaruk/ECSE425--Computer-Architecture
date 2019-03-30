@@ -15,7 +15,7 @@ public class Cache {
 	private List<MemoryElement> cells;
 
 	public Cache() {
-		for (int i=0;i<indexLenght,i++){
+		for (int i=0;i<indexLenght;i++){
 			cacheSize*=2;
 		}
 		
@@ -23,7 +23,7 @@ public class Cache {
 		cache = new HashMap<Integer, Integer>();
 	
 	
-		MemoryElement placeHolder=new MemoryElement():
+		MemoryElement placeHolder=new MemoryElement();
 		for(int i =0;i<cacheSize;i++){
 			cells.add(placeHolder);
 			cache.put(i,-1);
