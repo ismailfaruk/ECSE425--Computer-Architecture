@@ -9,13 +9,25 @@ public class Cache {
 	private Map<Integer, Integer> cache;
 	final int tagLength = 25;
 	final int indexLength = 9;
+	int cacheSize=1;
 	//final int BlockLength;
 
 	private List<MemoryElement> cells;
 
-	public Cache() {
+	public Cache() 
+		for (int i=0;i<indexLenght,i++){
+			cacheSize*=2;
+		}
+		
 		cells = new ArrayList<MemoryElement>();
 		cache = new HashMap<Integer, Integer>();
+	
+	
+		MemoryElement placeHolder=new MemoryElement():
+		for(int i =0;i<cacheSize;i++){
+			cells.add(placeHolder);
+			cache.put(i,-1);
+		}
 	}
 
 	public boolean isHit(int address) {
