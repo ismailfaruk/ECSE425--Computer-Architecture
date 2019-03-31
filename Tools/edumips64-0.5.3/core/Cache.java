@@ -22,7 +22,6 @@ public class Cache {
 		cells = new ArrayList<MemoryElement>();
 		cache = new HashMap<Integer, Integer>();
 	
-	
 		MemoryElement placeHolder=new MemoryElement(-1);
 		for(int i =0;i<cacheSize;i++){
 			cells.add(placeHolder);
@@ -30,6 +29,9 @@ public class Cache {
 		}
 	}
 
+	/** for checking if cache access is a hit or miss
+		@param address 16 bit memory address (in decimal, as an int)
+	*/
 	public boolean isHit(int address) {
 		int index = getIndex(address);
 		int tag1 = getTag(address);
@@ -37,8 +39,8 @@ public class Cache {
 		return tag1 == tag2;
 	}
 
-	/**
-	 * (If cache hits), load data from cache
+	/** (If cache hits), load data from cache
+		@param address 16 bit memory address (in decimal, as an int)
 	 */
 	public MemoryElement cacheGet(int address) {
 		int tag = getTag(address);
@@ -46,6 +48,10 @@ public class Cache {
 	}
 
 	/** (After a cache miss), load data from memory and store into cache
+			 getCell() is used to fetch memElement from memory 
+		@param address 16 bit memory address (in decimal, as an int)
+		@param mem the whole memory as a list
+		@return memoryElement that was added to cache
 	*/
 	public MemoryElement cacheAdd(List<MemoryElement> mem,int address){
 		//remove the element from the cell that corresponds to current index
@@ -62,12 +68,14 @@ public class Cache {
 			return getCell(mem,address);
 		}catch(MemoryElementNotFoundException e){
 			return null;
-			}
-			
-		
+		}
 	
 	}
 
+	/** extract the tag bits from address
+		@param address 16 bit memory address (in decimal, as an int)
+		@return tag bits (in decimal, as an int)
+	*/
 	private int getTag(int address) {
 		String addressBinary = Integer.toBinaryString(address);
 		String tagString = addressBinary.substring(0, (tagLength - 1));
@@ -75,6 +83,10 @@ public class Cache {
 		return tag;
 	}
 
+	/** extract the index bits from address
+		@param address 16 bit memory address (in decimal, as an int)
+		@return index bits (in decimal, as an int)
+	*/
 	private int getIndex(int address) {
 		String addressBinary = Integer.toBinaryString(address);
 		String iString = addressBinary.substring(tagLength, (tagLength + indexLength - 1));
@@ -82,6 +94,11 @@ public class Cache {
 		return i;
 	}
 
+	/**  fetch MemElement from memory
+	@param mem the whole memory as a list
+	@param address 16 bit memory address (in decimal, as an int)
+	@return return the memoryElement at the address
+	*/
 	private MemoryElement getCell(List<MemoryElement> mem, int address) throws MemoryElementNotFoundException {
 
 		int index = address / 8;

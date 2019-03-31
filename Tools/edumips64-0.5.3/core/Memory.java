@@ -96,19 +96,19 @@ public class Memory{
 	 * @throws MemoryElementNotFoundException if given index is too large for this memory.
 	 */
 	public MemoryElement getCell(int address) throws MemoryElementNotFoundException{
-
-		if(cache.isHit(address)){
-			return cache.cacheGet(address);
-		}
-
 		int index = address / 8;
 		
 		if(index >= CPU.DATALIMIT || index < 0 || address < 0)
 			throw new MemoryElementNotFoundException();
 
-		cache.cacheAdd(cells,address);
 
-		return cells.get(index);
+		if(cache.isHit(address)){//check if cache hit or miss
+			return cache.cacheGet(address); //if hit ,return from cache
+		}else{
+		cache.cacheAdd(cells,address);//else(miss),add block to cache from memory
+		}
+
+		return cells.get(index);// return the memory block
 	}
 
 	/** This method resets the memory*/
