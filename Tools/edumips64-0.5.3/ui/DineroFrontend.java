@@ -241,6 +241,7 @@ public class DineroFrontend extends JDialog {
 		JDialog f = new DineroFrontend(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		//make changes to create a drop down of cache options and refer to them in the report
 	}
 
 }
