@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DineroFrontend",
+            "request": "launch",
+            "mainClass": "edumips64.ui.DineroFrontend"
+        }
+    ]
+}

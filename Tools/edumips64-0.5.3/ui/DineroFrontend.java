@@ -41,7 +41,7 @@ public class DineroFrontend extends JDialog {
 	// one instance of DineroFrame will be created in EduMIPS64
 	private static JLabel pathLabel, paramsLabel;
 	private static JTextField path, params;
-	private static JButton browse, execute;
+	private static JButton browse, execute, configure;
 	private static JTextArea result;
 	public static JPanel panel;
 	//private static JComboBox cmbCacheList;
@@ -118,6 +118,8 @@ public class DineroFrontend extends JDialog {
 			}
 		});
 
+		configure = new JButton("Configure Cache");
+		configure.setAlignmentX(Component.CENTER_ALIGNMENT);
 		browse = new JButton("Browse...");
 		browse.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		execute = new JButton("Execute");
@@ -223,20 +225,20 @@ public class DineroFrontend extends JDialog {
 		cp.add(Box.createRigidArea(vSpace));
 
 		panel = new DineroSingleCachePanel('u', 1);
+		panel.setPreferredSize(new Dimension(20, 20));
 
 		cp.add(panel);
 		cp.add(Box.createRigidArea(vSpace));
-
+		
 		result = new JTextArea();
 		result.setBorder(BorderFactory.createTitledBorder("Messages"));
 		result.setEditable(false);
 		result.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
+		cp.add(configure);
 		cp.add(execute);
 		cp.add(Box.createRigidArea(vSpace));
 		cp.add(new JScrollPane(result));
-		
-
 		setSize(850, 500);
 	}
 
@@ -259,7 +261,6 @@ public class DineroFrontend extends JDialog {
 /** Panel with all the necessary controls to modify the options of a Cache.
  */
 class DineroSingleCachePanel extends JPanel {
-	private JPanel panel;
 	private DineroCacheOptions dco;
 	private JComboBox size, sizeUnit, bsize, bsizeUnit;
 	private JTextField assoc;
@@ -281,34 +282,27 @@ class DineroSingleCachePanel extends JPanel {
 		ccc = new JCheckBox();
 		ccc.setEnabled(false);
 
-		cacheSizeLabel = new JLabel;
-		cacheSizeLabel.setText("Cache size");
-		cacheSizeUnitLabel = new JLabel("Unit");
-		blockSizeLabel = new JLabel("Block size");
-		blockSizeUnit = new JLabel("Unit");
-		assocLabel = new JLabel("N way set associative");
-		cccLabel = new JLabel("Compulsory, Conflict and Capacity Miss Rates?");
-
-		add(cacheSizeLabel);
-		add(size);
-		
-		add(cacheSizeUnitLabel);
-		add(sizeUnit);
-
-		add(blockSizeLabel);
-		add(bsize);
-		
-		add(blockSizeUnit);
-		add(bsizeUnit);
-
-		add(assocLabel);
-		add(assoc);
-
-		add(cccLabel);
-		add(ccc);
+		JLabel cacheSizeLabel = new JLabel("Cache size");
+		JLabel cacheSizeUnitLabel = new JLabel("Unit (Byte)");
+		JLabel blockSizeLabel = new JLabel("Block size");
+		JLabel bsizeUnitLabel = new JLabel("Unit (Byte)");
+		JLabel assocLabel = new JLabel("N way set associative");
+		JLabel cccLabel = new JLabel("CCC Enable");//Compulsory, Conflict and Capacity Miss Rates?
 
 		setBorder(BorderFactory.createTitledBorder("Level " + level + " cache (" + type + ")"));
-		setLayout(new GridLayout(1, 3));
+		setLayout(new GridLayout(2, 6, 1, 1));
+		add(cacheSizeLabel);
+		add(cacheSizeUnitLabel);
+		add(blockSizeLabel);
+		add(bsizeUnitLabel);
+		add(assocLabel);
+		add(cccLabel);
+		add(size);
+		add(sizeUnit);
+		add(bsize);
+		add(bsizeUnit);
+		add(assoc);
+		add(ccc);
 	}
 }
 
