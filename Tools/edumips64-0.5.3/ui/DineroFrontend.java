@@ -43,6 +43,8 @@ public class DineroFrontend extends JDialog {
 	private static JTextField path, params;
 	private static JButton browse, execute;
 	private static JTextArea result;
+	public static JPanel panel;
+	//private static JComboBox cmbCacheList;
 	private static Container cp;
 	private class ReadStdOut extends Thread
 	{
@@ -220,6 +222,11 @@ public class DineroFrontend extends JDialog {
 		cp.add(cmdLine);
 		cp.add(Box.createRigidArea(vSpace));
 
+		panel = new DineroSingleCachePanel('u', 1);
+
+		cp.add(panel);
+		cp.add(Box.createRigidArea(vSpace));
+
 		result = new JTextArea();
 		result.setBorder(BorderFactory.createTitledBorder("Messages"));
 		result.setEditable(false);
@@ -228,20 +235,22 @@ public class DineroFrontend extends JDialog {
 		cp.add(execute);
 		cp.add(Box.createRigidArea(vSpace));
 		cp.add(new JScrollPane(result));
+		
 
 		setSize(850, 500);
 	}
-	public static void main(String[] args) {
-		DineroCacheOptions dco = new DineroCacheOptions('u', 1);
-		dco.size = "256k";
-		dco.bsize = "256";
 
-		System.out.println(dco);
+	public static void main(String[] args) {
+		//DineroCacheOptions dco = new DineroCacheOptions('u', 1);
+		//DineroSingleCachePanel dscp = new DineroSingleCachePanel('u', 1);
+		//dco.size = "256k";
+		//dco.bsize = "256";
+
+		//System.out.println(dco);
 
 		JDialog f = new DineroFrontend(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-		//make changes to create a drop down of cache options and refer to them in the report
 	}
 
 }
@@ -250,10 +259,12 @@ public class DineroFrontend extends JDialog {
 /** Panel with all the necessary controls to modify the options of a Cache.
  */
 class DineroSingleCachePanel extends JPanel {
+	private JPanel panel;
 	private DineroCacheOptions dco;
 	private JComboBox size, sizeUnit, bsize, bsizeUnit;
 	private JTextField assoc;
 	private JCheckBox ccc;
+
 	public DineroSingleCachePanel(char type, int level) {
 		dco = new DineroCacheOptions(type, level);
 
@@ -270,9 +281,34 @@ class DineroSingleCachePanel extends JPanel {
 		ccc = new JCheckBox();
 		ccc.setEnabled(false);
 
-		//setBorder(BorderFactory.createTitledBorder("Level " + level + " cache 
-		//(" + type + ")"));
-		//setLayout(new GridLayout(1, 3));
+		cacheSizeLabel = new JLabel;
+		cacheSizeLabel.setText("Cache size");
+		cacheSizeUnitLabel = new JLabel("Unit");
+		blockSizeLabel = new JLabel("Block size");
+		blockSizeUnit = new JLabel("Unit");
+		assocLabel = new JLabel("N way set associative");
+		cccLabel = new JLabel("Compulsory, Conflict and Capacity Miss Rates?");
+
+		add(cacheSizeLabel);
+		add(size);
+		
+		add(cacheSizeUnitLabel);
+		add(sizeUnit);
+
+		add(blockSizeLabel);
+		add(bsize);
+		
+		add(blockSizeUnit);
+		add(bsizeUnit);
+
+		add(assocLabel);
+		add(assoc);
+
+		add(cccLabel);
+		add(ccc);
+
+		setBorder(BorderFactory.createTitledBorder("Level " + level + " cache (" + type + ")"));
+		setLayout(new GridLayout(1, 3));
 	}
 }
 
