@@ -1,20 +1,20 @@
- -l1-ubsize 4 –l1-usize 64k –l1-uassoc 1
-  -l1-ubsize 8 –l1-usize 64k –l1-uassoc 1
-   -l1-ubsize 16 –l1-usize 64k –l1-uassoc 1
-    -l1-ubsize 32 –l1-usize 64k –l1-uassoc 1
-     -l1-ubsize 64 –l1-usize 64k –l1-uassoc 1
-      -l1-ubsize 128 –l1-usize 64k –l1-uassoc 1
+ -l1-ubsize 4 –l1-usize 16k –l1-uassoc 1
+  -l1-ubsize 8 –l1-usize 16k –l1-uassoc 1
+   -l1-ubsize 16 –l1-usize 16k –l1-uassoc 1
+    -l1-ubsize 32 –l1-usize 16k –l1-uassoc 1
+     -l1-ubsize 64 –l1-usize 16k –l1-uassoc 1
+      -l1-ubsize 128 –l1-usize 16k –l1-uassoc 1
 
- -l1-ubsize 32 –l1-usize 32k –l1-uassoc 1
-  -l1-ubsize 32 –l1-usize 64k –l1-uassoc 1
-   -l1-ubsize 32 –l1-usize 128k –l1-uassoc 1
-    -l1-ubsize 32 –l1-usize 256k –l1-uassoc 1
-     -l1-ubsize 32 –l1-usize 512k –l1-uassoc 1
+ -l1-ubsize 32 –l1-usize 2k –l1-uassoc 1
+  -l1-ubsize 32 –l1-usize 4k –l1-uassoc 1
+   -l1-ubsize 32 –l1-usize 8k –l1-uassoc 1
+    -l1-ubsize 32 –l1-usize 16k –l1-uassoc 1
+     -l1-ubsize 32 –l1-usize 32k –l1-uassoc 1
 
 
--l1-ubsize 32 –l1-usize 64k –l1-uassoc 2
--l1-ubsize 32 –l1-usize 64k –l1-uassoc 4
--l1-ubsize 32 –l1-usize 64k –l1-uassoc 8
--l1-ubsize 32 –l1-usize 64k –l1-uassoc 16
--l1-ubsize 32 –l1-usize 64k –l1-uassoc 32
+-l1-ubsize 32 –l1-usize 16k –l1-uassoc 2
+-l1-ubsize 32 –l1-usize 16k –l1-uassoc 4
+-l1-ubsize 32 –l1-usize 16k –l1-uassoc 8
+-l1-ubsize 32 –l1-usize 16k –l1-uassoc 16
+-l1-ubsize 32 –l1-usize 16k –l1-uassoc 32
 
