@@ -39,13 +39,18 @@ public class DineroFrontend extends JDialog {
 	// Attributes are static in order to make them accessible from
 	// the nested anonymous classes. They can be static, because at most
 	// one instance of DineroFrame will be created in EduMIPS64
-	private static JLabel pathLabel, paramsLabel;
+	private static JLabel pathLabel, paramsLabel, cacheLeveLabel, cacheTypeLabel;
 	private static JTextField path, params;
-	private static JButton browse, execute, configure;
+	private static JButton browse, execute, configure, create;
 	private static JTextArea result;
-	public static JPanel panel;
-	//private static JComboBox cmbCacheList;
+	public static JPanel panelL1, panelL2, panelL3, panelL4, panelL5;
+	private static JComboBox cacheLevel, cacheType;
 	private static Container cp;
+	private static int argLevel;	//global declaration of array Level argument
+	private static char argType;	//global declaration of array type argument
+	private static Box cachePanel;	//cachePanel container globally declared for flexibility
+	private static JScrollPane scrollPane;
+
 	private class ReadStdOut extends Thread
 	{
 	    public boolean finish = false;
@@ -84,7 +89,6 @@ public class DineroFrontend extends JDialog {
 				result.append(">> ERROR: " + ioe);
 			}
     	}
-	
 	}
 
 	public DineroFrontend(Frame owner) {
@@ -93,11 +97,39 @@ public class DineroFrontend extends JDialog {
 		cp = rootPane.getContentPane();
 		cp.setLayout(new BoxLayout(cp, BoxLayout.PAGE_AXIS));
 
-		Dimension hSpace = new Dimension(5, 0);
-		Dimension vSpace = new Dimension(0, 5);
+		final Dimension hSpace = new Dimension(5, 0);
+		final Dimension vSpace = new Dimension(0, 5);
 
-		panel = new DineroSingleCachePanel('u', 1);
-		//panel.setPreferredSize(new Dimension(20, 20));
+		// scrollPane = new JScrollPane(cp);
+		// scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		String[] level = {"1", "2", "3", "4", "5"};
+		String[] type = {"data", "instruction", "unified/Mixed"};
+
+		cacheLeveLabel	= new JLabel("Set Cache Level N");	//Label for cacheLevel
+		cacheTypeLabel  = new JLabel("Set Cache Type T");	//Label for cacheType
+
+		cacheLevel = new JComboBox(level);
+		cacheLevel.setSelectedIndex(0);
+		Dimension dimCacheLevel = cacheLevel.getPreferredSize();
+		cacheLevel.setPreferredSize(new Dimension(dimCacheLevel.width, dimCacheLevel.height));
+		
+		cacheType = new JComboBox(type);
+		Dimension dimCacheType = cacheLevel.getPreferredSize();
+		cacheType.setPreferredSize(new Dimension(dimCacheType.width, dimCacheType.height));
+
+		cacheLevel.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String levelMsg = String.valueOf(cacheLevel.getSelectedItem());
+				argLevel = Integer.parseInt(levelMsg);
+			}
+		});
+
+		cacheType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				argType = (String.valueOf(cacheType.getSelectedItem())).charAt(0);
+			}
+		});
 
 		pathLabel = new JLabel("DineroIV executable path:");
 		paramsLabel = new JLabel("Command line parameters:");
@@ -121,13 +153,48 @@ public class DineroFrontend extends JDialog {
 			}
 		});
 
+		create = new JButton("Create Cache");
+		create.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		configure = new JButton("Configure Cache");
 		configure.setAlignmentX(Component.CENTER_ALIGNMENT);
 		browse = new JButton("Browse...");
 		browse.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		execute = new JButton("Execute");
 		execute.setAlignmentX(Component.CENTER_ALIGNMENT);
-	
+
+		create.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				cachePanel.removeAll();
+
+				//Panels for different cache type and their configuration options
+				cachePanel.add(panelL1 = new DineroSingleCachePanel(argType, 1));
+
+				if (argLevel > 1){
+					cachePanel.add(Box.createRigidArea(vSpace));
+					cachePanel.add(panelL2 = new DineroSingleCachePanel(argType, 2));
+				}
+				
+				if (argLevel > 2){
+					cachePanel.add(Box.createRigidArea(vSpace));
+					cachePanel.add(panelL3 = new DineroSingleCachePanel(argType, 3));
+				}
+
+				if (argLevel > 3){
+					cachePanel.add(Box.createRigidArea(vSpace));
+					cachePanel.add(panelL4 = new DineroSingleCachePanel(argType, 4));
+				}
+
+				if (argLevel > 4){
+					cachePanel.add(Box.createRigidArea(vSpace));
+					cachePanel.add(panelL5 = new DineroSingleCachePanel(argType, 5));
+				}
+
+				//For cache panel container refresh
+				cachePanel.revalidate();
+				cachePanel.repaint();
+			}
+		});
+		
 		browse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 			JFileChooser jfc = new JFileChooser();
@@ -193,7 +260,7 @@ public class DineroFrontend extends JDialog {
 							found = true;
 						    if(found)
 							result.append(s + "\n");
-						} 
+						}
 					    if(stdErr.ready())
 						while ((s = stdErr.readLine()) != null) {
 						    result.append(">> Dinero error: " + s + "\n");
@@ -209,9 +276,19 @@ public class DineroFrontend extends JDialog {
 
 		configure.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				params.setText(panel.toString());
+				String parameter;
+				//cache parameter only taken from defined cache levels
+				parameter = panelL1.toString();
+				if (argLevel > 1){parameter += panelL2.toString();}
+				if (argLevel > 2){parameter += panelL3.toString();}
+				if (argLevel > 3){parameter += panelL4.toString();}
+				if (argLevel > 4){parameter += panelL5.toString();}	
+				params.setText(parameter);
 			}
 		});
+
+		
+		
 
 		Box dineroEx = Box.createHorizontalBox();
 		dineroEx.add(Box.createHorizontalGlue());
@@ -231,8 +308,24 @@ public class DineroFrontend extends JDialog {
 		cmdLine.add(Box.createRigidArea(hSpace));
 		cp.add(cmdLine);
 		cp.add(Box.createRigidArea(vSpace));
+		
+		Box cacheCreate = Box.createHorizontalBox();
+		cacheCreate.add(Box.createHorizontalGlue());
+		cacheCreate.add(cacheLeveLabel);
+		cacheCreate.add(Box.createRigidArea(hSpace));
+		cacheCreate.add(cacheLevel);
+		cacheCreate.add(Box.createRigidArea(hSpace));
+		cacheCreate.add(cacheTypeLabel);
+		cacheCreate.add(Box.createRigidArea(hSpace));
+		cacheCreate.add(cacheType);
+		cacheCreate.add(Box.createRigidArea(hSpace));
+		cacheCreate.add(create);
+		cp.add(cacheCreate);
+		cp.add(Box.createRigidArea(vSpace));
 
-		cp.add(panel);
+		cachePanel = Box.createVerticalBox();
+		cachePanel.add(panelL1 = new DineroSingleCachePanel(argType, 1));
+		cp.add(cachePanel);
 		cp.add(Box.createRigidArea(vSpace));
 		
 		result = new JTextArea();
@@ -249,16 +342,10 @@ public class DineroFrontend extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		//DineroCacheOptions dco = new DineroCacheOptions('u', 1);
-		//DineroSingleCachePanel dscp = new DineroSingleCachePanel('u', 1);
-		//dco.size = "256k";
-		//dco.bsize = "256";
-
-		//System.out.println(dco);
-
 		JDialog f = new DineroFrontend(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		//f.add(scrollPane);
 	}
 
 }
@@ -268,79 +355,62 @@ public class DineroFrontend extends JDialog {
  */
 class DineroSingleCachePanel extends JPanel {
 	private DineroCacheOptions dco;
-	private JComboBox size, sizeUnit, bsize, bsizeUnit;
+	private JComboBox size, sizeUnit, bsize, bsizeUnit, level, type;
 	private JTextField assoc;
 	private JCheckBox ccc;
 	private JLabel cacheSizeLabel, cacheSizeUnitLabel, blockSizeLabel, bsizeUnitLabel, assocLabel, cccLabel;
 
 	public DineroSingleCachePanel(char type, int level) {
 		dco = new DineroCacheOptions(type, level);
+		dco.size = "1";
+		dco.bsize = "1";
 
 		String[] sizes = {"1", "2", "4", "8", "16", "32", "64", "128", "256", "512"};
 		String[] units = {" ", "k", "M", "G"};
 
 		size = new JComboBox(sizes);
-		size.setSelectedIndex(0);
 		bsize = new JComboBox(sizes);
-		bsize.setSelectedItem(0);
 
 		sizeUnit = new JComboBox(units);
 		bsizeUnit = new JComboBox(units);
 
 		assoc = new JTextField();
 		ccc = new JCheckBox();
-		//ccc.setEnabled(True);
-
-		size.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				sizeUnit.setSelectedIndex(0);
-			}
-		});
-
-
-		bsize.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				bsizeUnit.setSelectedIndex(0);
-			}
-		});
-		
-		sizeUnit.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				String sizeUnitMsg = String.valueOf(sizeUnit.getSelectedItem());
-				int cacheSize = Integer.parseInt(String.valueOf(size.getSelectedItem()));
-				if (sizeUnitMsg == " "){cacheSize *= 1;}
-				else if (sizeUnitMsg == "k"){cacheSize *= 1024;}
-				else if (sizeUnitMsg == "M"){cacheSize *= 1024 * 1024;}
-				else if (sizeUnitMsg == "G"){cacheSize *= 1024 * 1024 * 1024;}
-				dco.size = String.valueOf(cacheSize);
-			}
-		});
-
-		bsizeUnit.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				String bsizeUnitMsg = String.valueOf(bsizeUnit.getSelectedItem());
-				int blockSize = Integer.parseInt(String.valueOf(bsize.getSelectedItem()));
-				if (bsizeUnitMsg == " "){blockSize *= 1;}
-				else if (bsizeUnitMsg == "k"){blockSize *= 1024;}
-				else if (bsizeUnitMsg == "M"){blockSize *= 1024 * 1024;}
-				else if (bsizeUnitMsg == "G"){blockSize *= 1024 * 1024 * 1024;}
-				dco.bsize = String.valueOf(blockSize);
-			}
-		});
-
-		ccc.addItemListener(new ItemListener(){
-			public void itemStateChanged(ItemEvent e) {
-				Boolean cccFlag =  ccc.isSelected();
-				dco.ccc = cccFlag;
-			}
-		});
 
 		cacheSizeLabel = new JLabel("Cache size");
 		cacheSizeUnitLabel = new JLabel("Unit (Byte)");
 		blockSizeLabel = new JLabel("Block size");
 		bsizeUnitLabel = new JLabel("Unit (Byte)");
 		assocLabel = new JLabel("N way set associative");
-		cccLabel = new JLabel("CCC Enable");	//Compulsory, Conflict and Capacity Miss Rates?
+		cccLabel = new JLabel("CCC Enable");
+
+		size.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				//dco.size = String.valueOf(sizeUnit.getSelectedItem());
+				sizeUnit.setSelectedIndex(0);
+			}
+		});
+
+		bsize.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				//dco.bsize = String.valueOf(bsize.getSelectedItem());
+				bsizeUnit.setSelectedItem(0);
+			}
+		});
+		
+		sizeUnit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				String sizeMsg = String.valueOf(size.getSelectedItem());
+				dco.size = sizeMsg + String.valueOf(sizeUnit.getSelectedItem());
+			}
+		});
+
+		bsizeUnit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String bsizeMsg = String.valueOf(bsize.getSelectedItem());
+				dco.bsize = bsizeMsg + String.valueOf(bsizeUnit.getSelectedItem());
+			}
+		});
 
 		setBorder(BorderFactory.createTitledBorder("Level " + level + " cache (" + type + ")"));
 		setLayout(new GridLayout(2, 6, 1, 1));
@@ -358,7 +428,16 @@ class DineroSingleCachePanel extends JPanel {
 		add(ccc);
 	}
 
+	//Passes 
 	public String toString(){
+		ccc.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e) {
+				Boolean cccFlag =  ccc.isSelected();
+				dco.ccc = cccFlag;
+			}
+		});
+
+		//Implements try and catch method to only allow numerical value only
 		try{
 			dco.assoc = Integer.parseInt(assoc.getText());
 		}
