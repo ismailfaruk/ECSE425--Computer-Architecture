@@ -287,9 +287,6 @@ public class DineroFrontend extends JDialog {
 			}
 		});
 
-		
-		
-
 		Box dineroEx = Box.createHorizontalBox();
 		dineroEx.add(Box.createHorizontalGlue());
 		dineroEx.add(pathLabel);
