@@ -97,10 +97,6 @@ public class DineroFrontend extends JDialog {
 		cp = rootPane.getContentPane();
 		cp.setLayout(new BoxLayout(cp, BoxLayout.PAGE_AXIS));
 
-		//Setup dimention for main container
-		Dimension dimCP = cp.getPreferredSize();
-		cp.setPreferredSize(new Dimension(dimCP.width, dimCP.height));
-
 		final Dimension hSpace = new Dimension(5, 0);
 		final Dimension vSpace = new Dimension(0, 5);
 		
@@ -365,7 +361,7 @@ public class DineroFrontend extends JDialog {
 		setContentPane(scrollPane);
 
 		//Resized the frame container to have better UX with the new panels
-		setSize(850, 800);
+		setSize(900, 800);
 	}
 
 	public static void main(String[] args) {
@@ -512,4 +508,3 @@ class DineroCacheOptions {
 		return cmdline;
 	}
 }
-
