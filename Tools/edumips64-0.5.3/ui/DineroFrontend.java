@@ -343,10 +343,9 @@ public class DineroFrontend extends JDialog {
 		cp.add(cacheCreate);
 		cp.add(Box.createRigidArea(vSpace));
 
-		//Box created for added Cache Panel components
+		//Box created for adding Cache Panel components
 		cachePanel = Box.createVerticalBox();
 		cachePanel.add(panelL1 = new DineroSingleCachePanel(argType, 1));
-
 		cp.add(cachePanel);
 		cp.add(Box.createRigidArea(vSpace));
 		
@@ -373,9 +372,7 @@ public class DineroFrontend extends JDialog {
 		JDialog f = new DineroFrontend(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-		//f.add(scrollPane);	
 	}
-
 }
 
 
@@ -464,7 +461,7 @@ class DineroSingleCachePanel extends JPanel {
 		setMinimumSize(new Dimension(850, 50));
 	}
 
-	//Passes 
+	//Passes Dinero command parameters with proper syntax
 	public String toString(){
 		ccc.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e) {
