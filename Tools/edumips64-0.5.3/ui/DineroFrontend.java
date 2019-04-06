@@ -39,17 +39,17 @@ public class DineroFrontend extends JDialog {
 	// Attributes are static in order to make them accessible from
 	// the nested anonymous classes. They can be static, because at most
 	// one instance of DineroFrame will be created in EduMIPS64
-	private static JLabel pathLabel, paramsLabel, cacheLeveLabel, cacheTypeLabel;
+	private static JLabel pathLabel, paramsLabel, cacheLeveLabel, cacheTypeLabel;	//labels for cache level and cache type added
 	private static JTextField path, params;
-	private static JButton browse, execute, configure, create;
+	private static JButton browse, execute, configure, create;	//configure and create buttons added to create panels and cache parameters
 	private static JTextArea result;
-	public static JPanel panelL1, panelL2, panelL3, panelL4, panelL5;
-	private static JComboBox cacheLevel, cacheType;
+	public static JPanel panelL1, panelL2, panelL3, panelL4, panelL5;	//static panels to add configuration components
+	private static JComboBox cacheLevel, cacheType;		//static delcaration of cache combo boxes
 	private static Container cp;
-	private static int argLevel;	//global declaration of array Level argument
-	private static char argType;	//global declaration of array type argument
-	private static Box cachePanel;	//cachePanel container globally declared for flexibility
-	private static JScrollPane scrollPane;
+	private static int argLevel;	//static declaration of array Level argument
+	private static char argType;	//static declaration of array type argument
+	private static Box cachePanel;	//static container globally declared for flexibility
+	private static JScrollPane scrollPane;	//static delclaration of scrollbar
 
 	private class ReadStdOut extends Thread
 	{
@@ -97,40 +97,13 @@ public class DineroFrontend extends JDialog {
 		cp = rootPane.getContentPane();
 		cp.setLayout(new BoxLayout(cp, BoxLayout.PAGE_AXIS));
 
+		//Setup dimention for main container
+		Dimension dimCP = cp.getPreferredSize();
+		cp.setPreferredSize(new Dimension(dimCP.width, dimCP.height));
+
 		final Dimension hSpace = new Dimension(5, 0);
 		final Dimension vSpace = new Dimension(0, 5);
-
-		// scrollPane = new JScrollPane(cp);
-		// scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		String[] level = {"1", "2", "3", "4", "5"};
-		String[] type = {"data", "instruction", "unified/Mixed"};
-
-		cacheLeveLabel	= new JLabel("Set Cache Level N");	//Label for cacheLevel
-		cacheTypeLabel  = new JLabel("Set Cache Type T");	//Label for cacheType
-
-		cacheLevel = new JComboBox(level);
-		cacheLevel.setSelectedIndex(0);
-		Dimension dimCacheLevel = cacheLevel.getPreferredSize();
-		cacheLevel.setPreferredSize(new Dimension(dimCacheLevel.width, dimCacheLevel.height));
-		
-		cacheType = new JComboBox(type);
-		Dimension dimCacheType = cacheLevel.getPreferredSize();
-		cacheType.setPreferredSize(new Dimension(dimCacheType.width, dimCacheType.height));
-
-		cacheLevel.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				String levelMsg = String.valueOf(cacheLevel.getSelectedItem());
-				argLevel = Integer.parseInt(levelMsg);
-			}
-		});
-
-		cacheType.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				argType = (String.valueOf(cacheType.getSelectedItem())).charAt(0);
-			}
-		});
-
 		pathLabel = new JLabel("DineroIV executable path:");
 		paramsLabel = new JLabel("Command line parameters:");
 
@@ -153,17 +126,66 @@ public class DineroFrontend extends JDialog {
 			}
 		});
 
+		String[] level = {"1", "2", "3", "4", "5"};
+		String[] type = {"data", "instruction", "unified/mixed"};
+
+		cacheLeveLabel	= new JLabel("Set Cache Level (N)");	//Label for cacheLevel
+		cacheTypeLabel  = new JLabel("Set Cache Type (T)");	//Label for cacheType
+
+		cacheLeveLabel.setPreferredSize(new Dimension(110, 26));
+		cacheLeveLabel.setMaximumSize(new Dimension(120, 26));
+		cacheLeveLabel.setMinimumSize(new Dimension(90, 26));
+
+		cacheTypeLabel.setPreferredSize(new Dimension(110, 26));
+		cacheTypeLabel.setMaximumSize(new Dimension(120, 26));
+		cacheTypeLabel.setMinimumSize(new Dimension(80, 26));
+
+		//combo box defined for cache level
+		cacheLevel = new JComboBox(level);
+		cacheLevel.setPreferredSize(new Dimension(80, 26));
+		cacheLevel.setMaximumSize(new Dimension(100, 26));
+		cacheLevel.setMinimumSize(new Dimension(60, 26));
+		
+		//combo box defined for cache type
+		cacheType = new JComboBox(type);
+		cacheType.setPreferredSize(new Dimension(110, 26));
+		cacheType.setMaximumSize(new Dimension(130, 26));
+		cacheType.setMinimumSize(new Dimension(100, 26));
+
+		//combo box action of cache level - passing combo option to argument for cache panel
+		cacheLevel.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String levelMsg = String.valueOf(cacheLevel.getSelectedItem());
+				argLevel = Integer.parseInt(levelMsg);
+			}
+		});
+		cacheLevel.setSelectedIndex(0);
+
+		//combo box action of cache type - passing combo option to argument for cache panel
+		cacheType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				argType = (String.valueOf(cacheType.getSelectedItem())).charAt(0);
+			}
+		});
+		cacheType.setSelectedIndex(2);
+
+		//button for creating cache defined
 		create = new JButton("Create Cache");
 		create.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		//button for configuring cache defined
 		configure = new JButton("Configure Cache");
 		configure.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 		browse = new JButton("Browse...");
 		browse.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		execute = new JButton("Execute");
 		execute.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+		//action for cache create button - creates panel to add cache parameters, based on cache level and type
 		create.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+
 				cachePanel.removeAll();
 
 				//Panels for different cache type and their configuration options
@@ -192,6 +214,20 @@ public class DineroFrontend extends JDialog {
 				//For cache panel container refresh
 				cachePanel.revalidate();
 				cachePanel.repaint();
+			}
+		});
+
+		//Action for cache configure button - to accumulate cache parameters
+		configure.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String parameter;
+				//cache parameter only taken for defined cache levels
+				parameter = panelL1.toString();
+				if (argLevel > 1){parameter += panelL2.toString();}
+				if (argLevel > 2){parameter += panelL3.toString();}
+				if (argLevel > 3){parameter += panelL4.toString();}
+				if (argLevel > 4){parameter += panelL5.toString();}	
+				params.setText(parameter);
 			}
 		});
 		
@@ -274,19 +310,6 @@ public class DineroFrontend extends JDialog {
 			}
 		});
 
-		configure.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				String parameter;
-				//cache parameter only taken from defined cache levels
-				parameter = panelL1.toString();
-				if (argLevel > 1){parameter += panelL2.toString();}
-				if (argLevel > 2){parameter += panelL3.toString();}
-				if (argLevel > 3){parameter += panelL4.toString();}
-				if (argLevel > 4){parameter += panelL5.toString();}	
-				params.setText(parameter);
-			}
-		});
-
 		Box dineroEx = Box.createHorizontalBox();
 		dineroEx.add(Box.createHorizontalGlue());
 		dineroEx.add(pathLabel);
@@ -320,8 +343,10 @@ public class DineroFrontend extends JDialog {
 		cp.add(cacheCreate);
 		cp.add(Box.createRigidArea(vSpace));
 
+		//Box created for added Cache Panel components
 		cachePanel = Box.createVerticalBox();
 		cachePanel.add(panelL1 = new DineroSingleCachePanel(argType, 1));
+
 		cp.add(cachePanel);
 		cp.add(Box.createRigidArea(vSpace));
 		
@@ -335,14 +360,20 @@ public class DineroFrontend extends JDialog {
 		cp.add(execute);
 		cp.add(Box.createRigidArea(vSpace));
 		cp.add(new JScrollPane(result));
-		setSize(850, 500);
+		
+		//Vertical and horizontal scroll added to the Frame container
+		scrollPane = new JScrollPane(cp, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		setContentPane(scrollPane);
+
+		//Resized the frame container to have better UX with the new panels
+		setSize(850, 800);
 	}
 
 	public static void main(String[] args) {
 		JDialog f = new DineroFrontend(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-		//f.add(scrollPane);
+		//f.add(scrollPane);	
 	}
 
 }
@@ -359,8 +390,6 @@ class DineroSingleCachePanel extends JPanel {
 
 	public DineroSingleCachePanel(char type, int level) {
 		dco = new DineroCacheOptions(type, level);
-		dco.size = "1";
-		dco.bsize = "1";
 
 		String[] sizes = {"1", "2", "4", "8", "16", "32", "64", "128", "256", "512"};
 		String[] units = {" ", "k", "M", "G"};
@@ -387,6 +416,7 @@ class DineroSingleCachePanel extends JPanel {
 				sizeUnit.setSelectedIndex(0);
 			}
 		});
+		size.setSelectedIndex(0);
 
 		bsize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
@@ -394,6 +424,7 @@ class DineroSingleCachePanel extends JPanel {
 				bsizeUnit.setSelectedItem(0);
 			}
 		});
+		bsize.setSelectedIndex(0);
 		
 		sizeUnit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -401,6 +432,7 @@ class DineroSingleCachePanel extends JPanel {
 				dco.size = sizeMsg + String.valueOf(sizeUnit.getSelectedItem());
 			}
 		});
+		sizeUnit.setSelectedIndex(0);
 
 		bsizeUnit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -408,7 +440,9 @@ class DineroSingleCachePanel extends JPanel {
 				dco.bsize = bsizeMsg + String.valueOf(bsizeUnit.getSelectedItem());
 			}
 		});
+		bsizeUnit.setSelectedIndex(0);
 
+		//adding components to panel layout
 		setBorder(BorderFactory.createTitledBorder("Level " + level + " cache (" + type + ")"));
 		setLayout(new GridLayout(2, 6, 1, 1));
 		add(cacheSizeLabel);
@@ -423,6 +457,11 @@ class DineroSingleCachePanel extends JPanel {
 		add(bsizeUnit);
 		add(assoc);
 		add(ccc);
+
+		//Default dimension set for panel
+		setPreferredSize(new Dimension(850, 80));
+		setMaximumSize(new Dimension(850, 90));
+		setMinimumSize(new Dimension(850, 50));
 	}
 
 	//Passes 
