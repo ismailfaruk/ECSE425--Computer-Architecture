@@ -405,7 +405,6 @@ class DineroSingleCachePanel extends JPanel {
 
 		size.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
-				//dco.size = String.valueOf(sizeUnit.getSelectedItem());
 				sizeUnit.setSelectedIndex(0);
 			}
 		});
@@ -414,7 +413,7 @@ class DineroSingleCachePanel extends JPanel {
 		bsize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				//dco.bsize = String.valueOf(bsize.getSelectedItem());
-				bsizeUnit.setSelectedItem(0);
+				bsizeUnit.setSelectedIndex(0);
 			}
 		});
 		bsize.setSelectedIndex(0);
