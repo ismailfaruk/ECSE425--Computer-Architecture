@@ -20,6 +20,12 @@ Research proposal: Our Team Bankers consists of Ismail Faruk, Nabila Aziz Shifat
 * [EduMIPS64](https://www.edumips.org/) - Visual and cross-platform MIPS64 CPU Simulator
 * [Dinero IV](http://pages.cs.wisc.edu/~markhill/DineroIV/) - Trace-Driven Uniprocessor Cache Simulator 
 
+* **Old Dinero Fronted**
+![Old Dinero Frontend](Docs/Dinero%20old%20UI.JPG)
+
+* **New Dinero Frontend**
+![New Dinero Frontend](Docs/Dinero%20UI%20Upgraded.JPG)
+
 ## Authors
 
 * [**Ismail Faruk**](https://github.com/ismailfaruk)
