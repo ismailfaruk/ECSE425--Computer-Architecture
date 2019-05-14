@@ -39,7 +39,7 @@ public class DineroFrontend extends JDialog {
 	// Attributes are static in order to make them accessible from
 	// the nested anonymous classes. They can be static, because at most
 	// one instance of DineroFrame will be created in EduMIPS64
-	private static JLabel pathLabel, paramsLabel, cacheLeveLabel, cacheTypeLabel;	//labels for cache level and cache type added
+	private static JLabel pathLabel, paramsLabel, cacheLevelLabel, cacheTypeLabel;	//labels for cache level and cache type added
 	private static JTextField path, params;
 	private static JButton browse, execute, configure, create;	//configure and create buttons added to create panels and cache parameters
 	private static JTextArea result;
@@ -122,15 +122,15 @@ public class DineroFrontend extends JDialog {
 			}
 		});
 
-		String[] level = {"1", "2", "3", "4", "5"};
-		String[] type = {"data", "instruction", "unified/mixed"};
+		final String[] level = {"1", "2", "3", "4", "5"};
+		final String[] type = {"data", "instruction", "unified/mixed"};
 
-		cacheLeveLabel	= new JLabel("Set Cache Level (N)");	//Label for cacheLevel
+		cacheLevelLabel	= new JLabel("Set Cache Level (N)");	//Label for cacheLevel
 		cacheTypeLabel  = new JLabel("Set Cache Type (T)");	//Label for cacheType
 
-		cacheLeveLabel.setPreferredSize(new Dimension(110, 26));
-		cacheLeveLabel.setMaximumSize(new Dimension(120, 26));
-		cacheLeveLabel.setMinimumSize(new Dimension(90, 26));
+		cacheLevelLabel.setPreferredSize(new Dimension(110, 26));
+		cacheLevelLabel.setMaximumSize(new Dimension(120, 26));
+		cacheLevelLabel.setMinimumSize(new Dimension(90, 26));
 
 		cacheTypeLabel.setPreferredSize(new Dimension(110, 26));
 		cacheTypeLabel.setMaximumSize(new Dimension(120, 26));
@@ -327,7 +327,7 @@ public class DineroFrontend extends JDialog {
 		
 		Box cacheCreate = Box.createHorizontalBox();
 		cacheCreate.add(Box.createHorizontalGlue());
-		cacheCreate.add(cacheLeveLabel);
+		cacheCreate.add(cacheLevelLabel);
 		cacheCreate.add(Box.createRigidArea(hSpace));
 		cacheCreate.add(cacheLevel);
 		cacheCreate.add(Box.createRigidArea(hSpace));
@@ -376,7 +376,7 @@ public class DineroFrontend extends JDialog {
  */
 class DineroSingleCachePanel extends JPanel {
 	private DineroCacheOptions dco;
-	private JComboBox size, sizeUnit, bsize, bsizeUnit, level, type;
+	private JComboBox size, sizeUnit, bsize, bsizeUnit;
 	private JTextField assoc;
 	private JCheckBox ccc;
 	private JLabel cacheSizeLabel, cacheSizeUnitLabel, blockSizeLabel, bsizeUnitLabel, assocLabel, cccLabel;
@@ -384,8 +384,8 @@ class DineroSingleCachePanel extends JPanel {
 	public DineroSingleCachePanel(char type, int level) {
 		dco = new DineroCacheOptions(type, level);
 
-		String[] sizes = {"1", "2", "4", "8", "16", "32", "64", "128", "256", "512"};
-		String[] units = {" ", "k", "M", "G"};
+		final String[] sizes = {"1", "2", "4", "8", "16", "32", "64", "128", "256", "512"};
+		final String[] units = {" ", "k", "M", "G"};
 
 		size = new JComboBox(sizes);
 		bsize = new JComboBox(sizes);
@@ -495,15 +495,20 @@ class DineroCacheOptions {
 	}
 	
 	public String toString() {
-		String prefix = "-l" + level + "-" + type;
-		String cmdline = prefix + "size" + " " + size + " ";
-		cmdline += prefix + "bsize" + " " + bsize + " ";
+		try {
+			String prefix = "-l" + level + "-" + type;
+			String cmdline = prefix + "size" + " " + size + " ";
+			cmdline += prefix + "bsize" + " " + bsize + " ";
 
-		if(assoc > 0)
-			cmdline += prefix + "assoc" + " " + assoc + " ";
-		if(ccc)
-			cmdline += prefix + "ccc" + " ";
+			if(assoc > 0)
+				cmdline += prefix + "assoc" + " " + assoc + " ";
+			if(ccc)
+				cmdline += prefix + "ccc" + " ";
 
-		return cmdline;
+			return cmdline;
+		}
+		catch (Exception e) {
+			return("");
+		}
 	}
 }
